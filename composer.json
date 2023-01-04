@@ -1,0 +1,20 @@
+{
+    "name": "harte/exel",
+    "description": "an application to read and write exel in php (and vice versa)",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Harteos7",
+            "email": "harteos14@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.23"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}
