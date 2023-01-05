@@ -5,48 +5,89 @@ require 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-//load spreadsheet
-$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("hello world.xlsx");
-$sheet = $spreadsheet->getActiveSheet();
-
-//it's the code for writing data in file.xlsx
-//change it
-$sheet->setCellValue('A1', 'Noms des applications');
-$sheet->setCellValue('A2', 'test');
-$sheet->setCellValue('A3', 'rien');
-$sheet->setCellValue('A4', 'cest pas A3');
-$sheet->setCellValue('B1', 'Prix');
-$sheet->setCellValue('B2', '19745');
-$sheet->setCellValue('B3', '1475621');
-$sheet->setCellValue('B4', '155');
-$sheet->setCellValue('B5', '834548');
-$sheet->setCellValue('C1', 'Lieu');
-$sheet->setCellValue('C2', 'Lion');
-$sheet->setCellValue('C3', 'Lile');
-
-//write it again to Filesystem with the same name (=replace)
-$writer = new Xlsx($spreadsheet);
-$writer->save('hello world.xlsx');
 
 // it's the code for read data in file.xlsx
-$arr = array();
-$c = 'A';
-for ($i = 1; ; $i++) { // $i and $c are the coordinates, respectively the number is the letter (A1, A2, B2, C3, ...)
+function read(string $exel)
+{
 
-    $b = strval($c).strval($i); // $b is the coordinates of the exel box
-    $a = $sheet->getCell($b); // $a is the content of the exel box
-    if ($a == '') { // we check that the new cell has data otherwise we change the column
-        $c++;
-        $i = 1;
-        $b = strval($c).strval($i);
-        $a = $sheet->getCell($b);
+    //load spreadsheet
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(strval($exel));
+    $sheet = $spreadsheet->getActiveSheet();
 
-            if ($a == '') {break;} // we check if the first cell of the new column has data if not, we stop the for (break)
+    $arr = array();
+    $letter = 'A';
+    for ($number = 1; ; $number++) { // $number and $letter are the coordinates (A1, A2, B2, C3, ...)
+
+        $id = strval($letter) . strval($number); // $id is the coordinates of the exel box
+        $cell = $sheet->getCell($id); // $cell is the content of the exel box
+        if ($cell == '') { // we check that the new cell has data otherwise we change the column
+            $letter++;
+            $number = 1;
+            $id = strval($letter) . strval($number);
+            $cell = $sheet->getCell($id);
+
+            if ($cell == '') {
+                break;
+            } // we check if the first cell of the new column has data if not, we stop the for (break)
             else
-            $arr[strval($b)] = strval($a);
-        
-    } 
-    else
-    $arr[strval($b)] = strval($a); // we put everything in array (the key is the coordinates and the value of their data)
+                $arr[strval($id)] = strval($cell);
+
+        } else
+            $arr[strval($id)] = strval($cell); // we put everything in array (the key is the coordinates and the value of their data)
+    }
+    print_r($arr);
+    return $arr;
 }
-print_r ($arr);
+
+//it's the code for writing data in file.xlsx
+function writenew(string $exel)
+{
+
+    //load spreadsheet
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(strval($exel));
+    $sheet = $spreadsheet->getActiveSheet();
+
+    $sheet->setCellValue('A1', 'Noms des applications');
+    $sheet->setCellValue('A2', 'pomme and fraise');
+    $sheet->setCellValue('A3', 'macdo drive online');
+    $sheet->setCellValue('A4', 'wish');
+
+
+
+    //write it again to Filesystem with the same name (=replace)
+    $writer = new Xlsx($spreadsheet);
+    $writer->save($exel);
+
+}
+
+function sortbyletter(string $letter,array $arr)
+{
+
+    foreach ($arr as $cle => $valeur) {
+        if ($letter == $cle[0]) {
+            echo 'La clé ' . $cle . ' contient la valeur ' . $valeur . "\n";
+        }
+    }
+
+
+}
+
+function sortbynumber(int $number,array $arr)
+{
+
+    foreach ($arr as $cle => $valeur) {
+        if ($number == $cle[1]) {
+            echo 'La clé ' . $cle . ' contient la valeur ' . $valeur . "\n";
+        }
+    }
+
+}
+
+$arr=read('hello world.xlsx');
+
+writenew('hello world.xlsx');
+
+sortbyletter('A',$arr);
+
+sortbynumber('1',$arr);
+
