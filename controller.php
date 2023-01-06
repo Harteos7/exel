@@ -87,44 +87,47 @@ function read(string $exel)
 }
 
 //it's the code for writing data in file.xlsx
-    function writenew(string $exel,array $arr)
-    {
+function writenew(string $exel,array $arr)
+{
 
-        //load spreadsheet
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(strval($exel));
-        $sheet = $spreadsheet->getActiveSheet();
+    //load spreadsheet
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(strval($exel));
+    $sheet = $spreadsheet->getActiveSheet();
 
-        $letterM='';  //$letterM is the largest letter used in the coordinates of the exel table
-        $numberM=0;   //$numberM is the largest number used in the coordinates of the exel array
-    
-        foreach ($arr as $cle => $valeur) {
-            $letterM = strval($letterM) . strval($cle[0]);
-        }
-        $letterM = substr(strval($letterM), -1); //gets the largest letter
-    
-        foreach ($arr as $cle => $valeur) {
-            if($numberM<strval($cle[1])){
-                $numberM = strval($cle[1]); // get the largest number of coordinates
-            }
-        }
+    $letterM='';  //$letterM is the largest letter used in the coordinates of the exel table
+    $numberM=0;   //$numberM is the largest number used in the coordinates of the exel array
 
-        $numberM = $numberM+1;
-
-        $nom = readline("Nom: ");
-
-        $prix = readline("Prix : ");
-
-        $lieu = readline("Lieu : ");
-
-        $sheet->setCellValue('A'.strval($numberM), strval($nom));
-        $sheet->setCellValue('B'.strval($numberM), strval($prix));
-        $sheet->setCellValue('C'.strval($numberM), strval($lieu));
-
-        //write it again to Filesystem with the same name (=replace)
-        $writer = new Xlsx($spreadsheet);
-        $writer->save($exel);
-
+    foreach ($arr as $cle => $valeur) {
+        $letterM = strval($letterM) . strval($cle[0]);
     }
+    $letterM = substr(strval($letterM), -1); //gets the largest letter
+
+    foreach ($arr as $cle => $valeur) {
+        if($numberM<strval($cle[1])){
+            $numberM = strval($cle[1]); // get the largest number of coordinates
+        }
+    }
+
+    $numberM = $numberM+1;
+    $letter = 'A';
+    
+
+    foreach ($arr as $cle => $valeur) {
+        if ($letter == $cle[0]) {
+            $nom = readline(strval($valeur).' = ');
+            $sheet->setCellValue(strval($letter).strval($numberM), strval($nom));
+
+            //write it again to Filesystem with the same name (=replace)
+            $writer = new Xlsx($spreadsheet);
+            $writer->save($exel);
+            $letter++;
+        }
+        if ($letter>$letterM){
+            break;
+        }
+    }
+
+}
 
 //it's the code for sort by column
 function sortbyletter(string $letter,array $arr)
