@@ -55,7 +55,6 @@ function read(string $exel)
 
         $id = strval($letter) . strval($number); // $id is the coordinates of the exel box
         $cell = $sheet->getCell($id); // $cell is the content of the exel box
-        echo $id;
         if ($cell == '' ) // this script saves the cell if it is filled
             {} else {
                 $cell = $sheet->getCell($id);
@@ -80,9 +79,6 @@ function read(string $exel)
         }
           
     }
-    print_r($arr);
-
-
     return $arr;
 }
 
@@ -153,6 +149,21 @@ function sortbynumber(int $number,array $arr)
 
 }
 
+//it's the code to search by name
+function searchbyname(array $arr)
+{
+    $name = readline('name = ');
+
+    foreach ($arr as $cle => $valeur) {
+        if ($name == $valeur) {
+            $number = $cle[1];
+        }
+    }
+
+    sortbynumber($number, $arr);
+
+}
+
 //it is a function that fills the empty cases as long as there is a data on the line (to be able to display an application well)
 //be careful : this function works only if a column of the exel file is completely filled !
 function debugexel(array $arr,string $exel)
@@ -195,12 +206,49 @@ function debugexel(array $arr,string $exel)
 
 }
 
-$arr=read('hello world.xlsx');
 
-writenew('hello world.xlsx',$arr);
+for (; ; ) {
 
-// sortbyletter('A',$arr);
+    $arr = read('hello world.xlsx');
+    echo '1-- new line'. "\n";
+    echo '2-- sort by collum'. "\n";
+    echo '3-- sort by line'. "\n";
+    echo '4-- search by name'. "\n";
+    echo '5-- debug'. "\n";
+    echo '6-- print the exel'. "\n";
+    echo '7-- break'. "\n";
+    $choix = readline('your selection = ');
+    echo ''."\n";
+    echo ''."\n";
 
-// sortbynumber('1',$arr);
+    if ($choix == 1) {
+        writenew('hello world.xlsx', $arr);
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 2) {
+        sortbyletter('A', $arr);
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 3) {
+        sortbynumber('1', $arr);
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 4) {
+        searchbyname($arr);
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 5) {
+        debugexel($arr, 'hello world.xlsx');
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 6) {
+        print_r($arr);
+        readline("Press [enter] to proceed");
+    }
+    if ($choix == 7) {
+        break;
+    }
+    echo ''."\n";
+    echo ''."\n";
+}
 
-// debugexel($arr,'hello world.xlsx');
