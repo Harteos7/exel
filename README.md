@@ -1,7 +1,7 @@
 # exel
 ANGLAIS
 
-an application to read and write exel in php (and vice versa)
+an file to read and write exel in php (and vice versa)
 
 be careful with :
 

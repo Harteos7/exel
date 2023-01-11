@@ -1,5 +1,6 @@
 <?php
 
+
 require 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -209,7 +210,7 @@ function debugexel(array $arr,string $exel)
 
 for (; ; ) {
 
-    $arr = read('hello world.xlsx');
+    $arr = read('C:\02 Mon projet\exel\hello world.xlsx');
     echo '1-- new line'. "\n";
     echo '2-- sort by collum'. "\n";
     echo '3-- sort by line'. "\n";
@@ -252,3 +253,15 @@ for (; ; ) {
     echo ''."\n";
 }
 
+$titre = 'MA PAGE HTML';
+ 
+echo '
+<html>
+<head>
+   <title>'.$titre.'</title>
+</head>
+<body>
+</body>
+</html>
+';
+?>
